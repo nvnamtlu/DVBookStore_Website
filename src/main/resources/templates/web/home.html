@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+<title>Nhà sách Đại Việt</title>
+<link rel="icon" href="images/favicon.png" />
+<link rel="stylesheet" href="fonts/flaticon/flaticon.css" />
+<link rel="stylesheet" href="fonts/icofont/icofont.min.css" />
+<link rel="stylesheet" href="fonts/fontawesome/fontawesome.min.css" />
+<link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css" />
+<link rel="stylesheet" href="vendor/venobox/venobox.min.css" />
+<link rel="stylesheet" href="vendor/slickslider/slick.min.css" />
+<link rel="stylesheet" href="vendor/niceselect/nice-select.min.css" />
+<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+	
+	<!--************************************
+				Header Start
+		*************************************-->
+		<header th:replace="~{web/fragments/header :: header}"></header>
+		<!--************************************
+				Header End
+		*************************************-->
+	
+	<section class="home-index-slider slider-arrow slider-dots">
+		<div class="banner-part banner-1">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-4 col-lg-4">
+						<div class="banner-content">
+							<h2 style="color: var(--primary)">Săn deal siêu xịn!</h2>
+							</br>
+							<div class="banner-btn">
+								<a class="btn btn-inline"
+									th:href="@{/products}">
+									<i class="fas fa-shopping-basket"></i>
+									<span>mua sắm ngay bây giờ</span>
+								</a>
+<!-- 								<a class="btn btn-outline"
+									href="javascript:void(0);">
+									<i class="icofont-sale-discount"></i>
+									<span>nhận đề nghị</span>
+								</a> -->
+							</div>
+						</div>
+					</div>
+					<div class="col-md-8 col-lg-8">
+						<div class="banner-img">
+							<img src="images/home/index/banner1.png" alt="index" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="banner-part banner-2">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md-5 col-lg-8">
+						<div class="banner-img">
+							<img src="images/home/index/banner2.png" alt="index" />
+						</div>
+					</div>
+					<div class="col-md-7 col-lg-4">
+						<div class="banner-content">
+							<h2 style="color: var(--primary)">Săn Deal giá sốc!</h2>
+							</br>
+							<div class="banner-btn">
+								<a class="btn btn-inline" th:href="@{/products}">
+									<i class="fas fa-shopping-basket"></i>
+									<span>mua sắm ngay bây giờ</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="section suggest-part">
+		<div class="container">
+			<ul class="suggest-slider slider-arrow">
+				<li th:each="item : ${coutnProductByCategory}">
+					<a class="suggest-card" th:href="@{/productByCategory(id=${item[0]})}">
+						<img src="../images/suggest/sg.jpg" alt="suggest"/>
+							<h5>
+								[[${item[1]}]] <span>số lượng : [[${item[2]}]] </span>
+							</h5>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</section>
+	<section class="section recent-part">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="section-heading">
+						<h2>Mặt hàng bán chạy</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<ul class="new-slider slider-arrow">
+						<li th:each="item : ${bestSaleProduct20}">
+							<div class="product-card">
+								<div class="product-media">
+									<div class="product-label">
+										<label class="label-text new">bán chạy</label>
+										<label class="label-text sale">- [[${item.discount + '%'}]]</label>
+									</div>
+									<button class="product-wish wish">
+										<i class="fas fa-heart"></i>
+									</button>
+									<th:block th:if="${item.productImage == ''}">
+										<img src="../images/product/booknotfount.png" width="110px" alt="product" />
+									</th:block>
+									<th:block th:if="${item.productImage != ''}">
+										<a class="product-image" href="javascript:void(0);">
+				                            <img th:src="@{'/loadImage?imageName='+${item.productImage}}" width="110px" alt="product"/>
+				                        </a>
+									</th:block>
+									<div class="product-widget">
+										<th:block href="/login" th:if="${user.email == null}">
+					                      <a
+					                        title="Hãy đăng nhập"
+					                        th:href="@{/login}"
+					                        class="fas fa-heart">
+					                        </a>
+				                        </th:block>
+				                        
+				                        <th:block th:if="${user.email != null}">
+					                      <a th:if="${item.favorite} == false"
+					                        title="Yêu thích"
+					                        th:href="@{/doFavorite(id=${item.productId})}"
+					                        class="fas fa-heart">
+					                        </a>
+				                        
+					                      <a th:if="${item.favorite} == true"
+					                        title="Xóa Yêu thích"
+					                        th:href="@{/doUnFavorite(id=${item.productId})}"
+					                        style="background-color: #fd7e14"
+					                        class="fas fa-heart">
+					                        </a>
+				                        </th:block>
+										<a
+											title="Video sản phẩm"
+											href="https://youtu.be/3FbiUs928NQ"
+											class="venobox fas fa-play"
+											data-autoplay="true"
+											data-vbtype="video">
+										</a>
+										<a
+											title="Chi tiết sản phẩm"
+											th:href="@{/productDetail(id=${item.productId})}"
+											class="fas fa-eye">
+										</a>
+									</div>
+								</div>
+								<div class="product-content">
+									<div class="product-rating">
+										<i class="active icofont-star"></i>
+										<i class="active icofont-star"></i>
+										<i class="active icofont-star"></i>
+										<i class="active icofont-star"></i>
+										<i class="icofont-star"></i>
+									</div>
+									
+									<h6 class="product-name">
+										<a th:href="@{/productDetail(id=${item.productId})}">[[${item.productName}]]</a>
+									</h6>
+									<h6 class="product-price">
+										<del>[[${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0, 'DEFAULT')}+'.000đ']]</del>
+										<span>[[${#numbers.formatDecimal(item.price - (item.price * item.discount/100), 1, 'DEFAULT', 0, 'DEFAULT')}+'.000đ']]</span>
+									</h6>
+									<a class="product-add1" title="Thêm giỏ hàng" th:href="@{/addToCart(productId=${item.productId})}">
+										<i class="fas fa-shopping-basket"></i><span>Thêm giỏ hàng</span>
+									</a>
+									
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="section-btn-25">
+						<a th:href="@{/products}" class="btn btn-outline"><i
+							class="fas fa-eye"></i><span>xem thêm</span></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="section promo-part">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="promo-img">
+						<a href="javascript:void(0);"><img src="images/promo/home/03.jpg" alt="promo" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<section class="section feature-part">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="section-heading">
+						<h2>Mặt hàng nổi bật</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<ul class="new-slider slider-arrow">
+						<li th:each="item : ${bestSaleProduct20}">
+							<div class="product-card">
+								<div class="product-media">
+									<div class="product-label">
+										<label class="label-text feat">nổi bật</label>
+										<label class="label-text sale">- [[${item.discount + '%'}]]</label>
+									</div>
+									<button class="product-wish wish">
+										<i class="fas fa-heart"></i>
+									</button>
+									<th:block th:if="${item.productImage == ''}">
+										<img src="../images/product/booknotfount.png" width="110px" alt="product" />
+									</th:block>
+									<th:block th:if="${item.productImage != ''}">
+										<a class="product-image" href="javascript:void(0);">
+				                            <img th:src="@{'/loadImage?imageName='+${item.productImage}}" width="110px" alt="product"/>
+				                        </a>
+									</th:block>
+									<div class="product-widget">
+										<th:block href="/login" th:if="${user.email == null}">
+					                      <a
+					                        title="Hãy đăng nhập"
+					                        th:href="@{/login}"
+					                        class="fas fa-heart">
+					                        </a>
+				                        </th:block>
+				                        
+				                        <th:block th:if="${user.email != null}">
+					                      <a th:if="${item.favorite} == false"
+					                        title="Yêu thích"
+					                        th:href="@{/doFavorite(id=${item.productId})}"
+					                        class="fas fa-heart">
+					                        </a>
+				                        
+					                      <a th:if="${item.favorite} == true"
+					                        title="Xóa Yêu thích"
+					                        th:href="@{/doUnFavorite(id=${item.productId})}"
+					                        style="background-color: #fd7e14"
+					                        class="fas fa-heart">
+					                        </a>
+				                        </th:block>
+										<a
+											title="Product Video"
+											href="https://youtu.be/3FbiUs928NQ"
+											class="venobox fas fa-play"
+											data-autoplay="true"
+											data-vbtype="video">
+										</a>
+										<a
+											title="Chi tiết sản phẩm"
+											th:href="@{/productDetail(id=${item.productId})}"
+											class="fas fa-eye">
+										</a>
+									</div>
+								</div>
+								<div class="product-content">
+									<div class="product-rating">
+										<i class="active icofont-star"></i>
+										<i class="active icofont-star"></i>
+										<i class="active icofont-star"></i>
+										<i class="active icofont-star"></i>
+										<i class="icofont-star"></i>
+									</div>
+									
+									<h6 class="product-name">
+										<a th:href="@{/productDetail(id=${item.productId})}">[[${item.productName}]]</a>
+									</h6>
+									<h6 class="product-price">
+										<del>[[${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0, 'DEFAULT')}+'.000đ']]</del>
+										<span>[[${#numbers.formatDecimal(item.price - (item.price * item.discount/100), 1, 'DEFAULT', 0, 'DEFAULT')}+'.000đ']]</span>
+									</h6>
+									<a class="product-add1" title="Thêm giỏ hàng" th:href="@{/addToCart(productId=${item.productId})}">
+										<i class="fas fa-shopping-basket"></i><span>Thêm giỏ hàng</span>
+									</a>
+									
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="section-btn-25">
+						<a th:href="@{/products}" class="btn btn-outline"><i
+							class="fas fa-eye"></i><span>xem thêm</span></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="section countdown-part">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-6 mx-auto">
+					<div class="countdown-content">
+						<h3>ƯU ĐÃI GIẢM GIÁ ĐẶC BIỆT CHO CÁC MẶT HÀNG</h3></br>
+						<div class="countdown countdown-clock" data-countdown="2022/08/22">
+							<span class="countdown-time"><span>00</span><small>days</small></span><span
+								class="countdown-time"><span>00</span><small>hours</small></span><span
+								class="countdown-time"><span>00</span><small>minutes</small></span><span
+								class="countdown-time"><span>00</span><small>seconds</small></span>
+						</div>
+						<a th:href="@{/products}" class="btn btn-inline"><i
+							class="fas fa-shopping-basket"></i><span>Mua sắm ngay bây
+								giờ</span></a>
+					</div>
+				</div>
+				<div class="col-lg-1"></div>
+				<div class="col-lg-5">
+					<div class="countdown-img">
+						<img src="images/countdown.jpg" alt="countdown" />
+						<div class="countdown-off">
+							<span>45%</span><span>off</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="section newitem-part">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="section-heading">
+						<h2>Mặt hàng mới về</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<ul class="new-slider slider-arrow">
+						<li th:each="item : ${productList}">
+							<div class="product-card">
+								<div class="product-media">
+									<div class="product-label">
+										<label class="label-text new">mới</label>
+										<label class="label-text sale">- [[${item.discount + '%'}]]</label>
+									</div>
+									<button class="product-wish wish">
+										<i class="fas fa-heart"></i>
+									</button>
+									<th:block th:if="${item.productImage == ''}">
+										<img src="../images/product/booknotfount.png" width="110px" alt="product" />
+									</th:block>
+									<th:block th:if="${item.productImage != ''}">
+										<a class="product-image" href="javascript:void(0);">
+				                            <img th:src="@{'/loadImage?imageName='+${item.productImage}}" width="110px" alt="product"/>
+				                        </a>
+									</th:block>
+									<div class="product-widget">
+										                    	<th:block href="/login" th:if="${user.email == null}">
+					                      <a
+					                        title="Hãy đăng nhập"
+					                        th:href="@{/login}"
+					                        class="fas fa-heart">
+					                        </a>
+				                        </th:block>
+				                        
+				                        <th:block th:if="${user.email != null}">
+					                      <a th:if="${item.favorite} == false"
+					                        title="Yêu thích"
+					                        th:href="@{/doFavorite(id=${item.productId})}"
+					                        class="fas fa-heart">
+					                        </a>
+				                        
+					                      <a th:if="${item.favorite} == true"
+					                        title="Xóa Yêu thích"
+					                        th:href="@{/doUnFavorite(id=${item.productId})}"
+					                        style="background-color: #fd7e14"
+					                        class="fas fa-heart">
+					                        </a>
+				                        </th:block>
+										<a
+											title="Product Video"
+											href="https://youtu.be/3FbiUs928NQ"
+											class="venobox fas fa-play"
+											data-autoplay="true"
+											data-vbtype="video">
+										</a>
+										<a
+											title="Chi tiết sản phẩm"
+											th:href="@{/productDetail(id=${item.productId})}"
+											class="fas fa-eye">
+										</a>
+									</div>
+								</div>
+								<div class="product-content">
+									<div class="product-rating">
+										<i class="active icofont-star"></i>
+										<i class="active icofont-star"></i>
+										<i class="active icofont-star"></i>
+										<i class="active icofont-star"></i>
+										<i class="icofont-star"></i>
+									</div>
+									<h6 class="product-name">
+										<a th:href="@{/productDetail(id=${item.productId})}">[[${item.productName}]]</a>
+									</h6>
+									<h6 class="product-price">
+										<del>[[${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0, 'DEFAULT')}+'.000đ']]</del>
+										<span>[[${#numbers.formatDecimal(item.price - (item.price * item.discount/100), 1, 'DEFAULT', 0, 'DEFAULT')}+'.000đ']]</span>
+									</h6>
+									<a class="product-add1" title="Thêm giỏ hàng" th:href="@{/addToCart(productId=${item.productId})}">
+										<i class="fas fa-shopping-basket"></i><span>Thêm giỏ hàng</span>
+									</a>
+									
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="section-btn-25">
+						<a th:href="@{/products}" class="btn btn-outline"><i
+							class="fas fa-eye"></i><span>xem thêm</span></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="section promo-part">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-md-6 col-lg-6 px-xl-3">
+					<div class="promo-img">
+						<a href="javascript:void(0);"><img src="images/promo/home/01.jpg" alt="promo" /></a>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-6 col-lg-6 px-xl-3">
+					<div class="promo-img">
+						<a href="javascript:void(0);"><img src="images/promo/home/02.jpg" alt="promo" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<section class="section testimonial-part">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="section-heading">
+						<h2>phản hồi của khách hàng</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="testimonial-slider slider-arrow">
+						<div class="testimonial-card">
+							<i class="fas fa-quote-left"></i>
+							<p>Chất lượng sách rất tốt, tôi đã mua nhiều lần và chưa bao giờ thất vọng</p>
+							<h5>Việt Anh</h5>
+							<ul>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+							</ul>
+							<img src="images/avatar/01.jpg" alt="testimonial" />
+						</div>
+						<div class="testimonial-card">
+							<i class="fas fa-quote-left"></i>
+							<p>Shop rất uy tín, tư vấn rất nhiệt tình</p>
+							<h5>Mai Phương</h5>
+							<ul>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+							</ul>
+							<img src="images/avatar/02.jpg" alt="testimonial" />
+						</div>
+						<div class="testimonial-card">
+							<i class="fas fa-quote-left"></i>
+							<p>Chất lượng quá tuyện vời!</p>
+							<h5>Thùy Vân</h5>
+							<ul>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+							</ul>
+							<img src="images/avatar/03.jpg" alt="testimonial" />
+						</div>
+						<div class="testimonial-card">
+							<i class="fas fa-quote-left"></i>
+							<p>10 điểm chất lượng :))</p>
+							<h5>Quang Quân</h5>
+							<ul>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+								<li class="fas fa-star"></li>
+							</ul>
+							<img src="images/avatar/04.jpg" alt="testimonial" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="news-part"
+		style="background: url(images/newsletter.jpg) no-repeat center">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-md-5 col-lg-6 col-xl-7">
+					<div class="news-text">
+						<h2>Đăng ký nhận thông báo</h2>
+						<p>Hàng loạt các chương trình khuyến mãi, thông tin về các đầu sách mới nhất</p>
+					</div>
+				</div>
+				<div class="col-md-7 col-lg-6 col-xl-5">
+					<form class="news-form">
+						<input type="text" placeholder="Nhập Địa Chỉ Email Của Bạn" />
+						<button>
+							<span><i class="icofont-ui-email"></i>Gửi</span>
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="intro-part">
+		<div class="container">
+			<div class="row intro-content">
+				<div class="col-sm-6 col-lg-3">
+					<div class="intro-wrap">
+						<div class="intro-icon">
+							<i class="fas fa-truck"></i>
+						</div>
+						<div class="intro-content">
+							<h5>Giao hàng nhanh chóng</h5>
+							<p>Đội ngũ giao hàng tận tâm của chúng tôi sẽ chuyển hàng đến tận tay bạn trong thời gian sớm nhất.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<div class="intro-wrap">
+						<div class="intro-icon">
+							<i class="fas fa-sync-alt"></i>
+						</div>
+						<div class="intro-content">
+							<h5>Chính Sách Hoàn Trả</h5>
+							<p>Khi nhận hàng bạn có quyền kiểm tra hàng trước khi nhận, nếu mặt hàng không chính xác, hay có bất cứ vẫn đề gì, bạn có thể đổi trả hàng miễn phí.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<div class="intro-wrap">
+						<div class="intro-icon">
+							<i class="fas fa-headset"></i>
+						</div>
+						<div class="intro-content">
+							<h5>Hệ Thống Hỗ Trợ</h5>
+ 							<p>Chúng tôi có hệ thống kênh hỗ trợ rất đa dạng, nếu có bất kỳ thắc mắc hay vấn đề gì bạn có thể liên hệ với chúng tôi qua chatbox, email hay gọi điện thoại trực tiếp để được tư vấn.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<div class="intro-wrap">
+						<div class="intro-icon">
+							<i class="fas fa-lock"></i>
+						</div>
+						<div class="intro-content">
+							<h5>Thanh Toán An Toàn</h5>
+ 							<p>Chúng tôi cung cấp kênh thanh toán an toàn và đa dạng, bạn có thể thanh toán trực tiếp khi nhận được hàng hoặc thanh toán online.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<!--************************************
+				Footer Start
+		*************************************-->
+		<footer th:replace="~{web/fragments/footer :: footer}"></footer>
+				
+		<!--************************************
+				Footer End
+		*************************************-->
+		
+	<script src="vendor/bootstrap/jquery-1.12.4.min.js"></script>
+	<script src="vendor/bootstrap/popper.min.js"></script>
+	<script src="vendor/bootstrap/bootstrap.min.js"></script>
+	<script src="vendor/countdown/countdown.min.js"></script>
+	<script src="vendor/niceselect/nice-select.min.js"></script>
+	<script src="vendor/slickslider/slick.min.js"></script>
+	<script src="vendor/venobox/venobox.min.js"></script>
+	<script src="js/nice-select.js"></script>
+	<script src="js/countdown.js"></script>
+	<script src="js/accordion.js"></script>
+	<script src="js/venobox.js"></script>
+	<script src="js/slick.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
